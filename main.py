@@ -1,11 +1,7 @@
 import subprocess
 import json
 
-
-#Variaveis
-err_list = []
-
-#ADD THIS CODE TO THE MAIN LOOP
+#not important
 wifi = subprocess.run(["netsh", "wlan", "show", "profile"], shell=True, check=True, capture_output=True)
 wifis = str(wifi)
 cont = wifis.count("    All User Profile     ")
@@ -16,9 +12,7 @@ ac2 = ac1.replace("CompletedProcess(args=['netsh', 'wlan', 'show', 'profile'], r
 Users = ac2.split("    All User Profile     : ")
 Users.pop(0)
 
-
-
-
+#Base dict format to store "personal wifis" info
 dic_wifi = {
     "Profile information" :{
         "Version" : "",
@@ -52,6 +46,8 @@ dic_wifi = {
         "Cost Source" : ""
     }
 }
+
+#Base dict for open wifis
 dic_open = {
     "Profile information" :{
         "Version" : "",
@@ -87,8 +83,7 @@ dic_open = {
 
 #FUNCTIONS
 ##
-
-
+#
 #funcao para guardar "Wifis.json" os dicts
 def store(dct): #store .json
     jsons = json.dumps(dct, indent = 4)
@@ -146,58 +141,20 @@ def dict_func(lista, dict):
         dict["Cost settings"]["Roaming"] = lista[19]
         dict["Cost settings"]["Cost Source"] = lista[20]
 
-
-
-'''
-def err_func():
-    global reveal
-    for x in range(len(err_list)):
-        local = err_list[x] #LOCAL e o qie e aficionado a lista
-        entry = 'name={}'.format(local)
-        reveal = subprocess.run(['netsh','wlan','show','profile', entry,'key=clear'], shell=True, capture_output=True)
-        
-        
-        #Remove useless information
-        sclean = str(reveal)
-        cleann = sclean.replace("\\r\\n\\r\\n","  ").replace("\\r","").replace("\\n","").replace(insert,"")
-        text_to_delet = "CompletedProcess(args=['netsh', 'wlan', 'show', 'profile', 'name={wifi_err}', 'key=clear'], returncode=0, stdout=b'Profile {wifi_err} on interface Wi-Fi: =======================================================================   Applied: All User Profile      Profile information -------------------     Version                : ".format(wifi_err=local)
-        cleann2 = cleann.replace(text_to_delet, "",1).replace("', stderr=b'')","",-1)
-        cleann4 = cleann2.replace("Applied: All User Profile","").replace("=======================================================================","")
-        cleann3 = cleann2.replace("    Type                   :","",1).replace("    Name                   :","",1).replace("    Control options        :         Connection mode    :","",1).replace("        Network broadcast  :","",1).replace("        AutoSwitch         :","",1).replace("        MAC Randomization  :","",1).replace("  Connectivity settings ---------------------     Number of SSIDs        :","",1).replace("    SSID name              :","",1).replace("    Network type           :","",1).replace("    Radio type             :","",1).replace("    Vendor extension          :","",1).replace("  Security settings -----------------     Authentication         :","",1).replace("    Cipher                 :","",1).replace("    Authentication         :","",1).replace("    Cipher                 :","",1).replace("    Security key           :","",1).replace("    Key Content            :","",1).replace("  Cost settings -------------     Cost                   :","",1).replace("    Congested              :","",1).replace("    Approaching Data Limit :","",1).replace("    Over Data Limit        :","",1).replace("    Roaming                :","",1).replace("    Cost Source            :","",1)
-        cleann1 = cleann2.replace("    Type                   :",".",1).replace("    Name                   :",".",1).replace("    Control options        :         Connection mode    :",".",1).replace("        Network broadcast  :",".",1).replace("        AutoSwitch         :",".",1).replace("        MAC Randomization  :",".",1).replace("  Connectivity settings ---------------------     Number of SSIDs        :",".",1).replace("    SSID name              :",".",1).replace("    Network type           :",".",1).replace("    Radio type             :",".",1).replace("    Vendor extension          :",".",1).replace("  Security settings -----------------     Authentication         :",".",1).replace("    Cipher                 :",".",1).replace("    Authentication         :",".",1).replace("    Cipher                 :",".",1).replace("    Security key           :",".",1).replace("    Key Content            :",".",1).replace("  Cost settings -------------     Cost                   :",".",1).replace("    Congested              :",".",1).replace("    Approaching Data Limit :",".",1).replace("    Over Data Limit        :",".",1).replace("    Roaming                :",".",1).replace("    Cost Source            :",".",1)
-        
-        #Store data
-        lista_err = cleann1.split(". ") #list whit useful information
-        dict_func(lista_err, dic_open)   #store data 
-        store(dic_open)
-'''
-
-
-
-
-
-
-
 ##RUNNED CODE
-#
+#Main loop
+#change the "Basic" normal loop to a loop w/open file. To be faster
 for x in range(len(Users)):
-    #define global variables
-    global revealer
-    global lista
-    global dict_wifi
-    wifiname = (Users[x])
+    
+    wifiname = (Users[x])#nome de cada wifi guardado
     
     try:
-        #scrape the info
+        #scrape the info de um wifi especifico
         insert = 'name="{}"'.format(wifiname)
         reveal = subprocess.run(['netsh','wlan','show','profile', insert,'key=clear'], shell=True, check=True, capture_output=True)
     
     except subprocess.CalledProcessError:
-        #this exeption happen to open wifis
-        ##CHANGE THE ERR_LIST FUNCTiON AND ADD IT TO THE LOOP
-        #err_list.append(wifiname)
-        #wifiname = local
-        
+        #this exeption happen to open wifis 
         entry = f'name={wifiname}'
         reveal = subprocess.run(['netsh','wlan','show','profile', entry,'key=clear'], shell=True, capture_output=True)
         
@@ -215,16 +172,13 @@ for x in range(len(Users)):
         lista_err = cleann1.split(". ") #list whit useful information
         dict_func(lista_err, dic_open)   #store data 
         store(dic_open)
-        
-
 
 
     else:  #To personal wifis
         
+        #Clean scraped data
         sclean = str(reveal)
         cleann = sclean.replace("\\r\\n\\r\\n","  ").replace("\\r","").replace("\\n","").replace(insert,"")
-        
-        #Clean data
         text_to_delet = "CompletedProcess(args=['netsh', 'wlan', 'show', 'profile', '', 'key=clear'], returncode=0, stdout=b'Profile {} on interface Wi-Fi: =======================================================================   Applied: All User Profile      Profile information -------------------     Version                : ".format(wifiname)
         cleann2 = cleann.replace(text_to_delet, "'",1).replace("', stderr=b'')","",-1)
         cleann3 = cleann2.replace("    Type                   :","",1).replace("    Name                   :","",1).replace("    Control options        :         Connection mode    :","",1).replace("        Network broadcast  :","",1).replace("        AutoSwitch         :","",1).replace("        MAC Randomization  :","",1).replace("  Connectivity settings ---------------------     Number of SSIDs        :","",1).replace("    SSID name              :","",1).replace("    Network type           :","",1).replace("    Radio type             :","",1).replace("    Vendor extension          :","",1).replace("  Security settings -----------------     Authentication         :","",1).replace("    Cipher                 :","",1).replace("    Authentication         :","",1).replace("    Cipher                 :","",1).replace("    Security key           :","",1).replace("    Key Content            :","",1).replace("  Cost settings -------------     Cost                   :","",1).replace("    Congested              :","",1).replace("    Approaching Data Limit :","",1).replace("    Over Data Limit        :","",1).replace("    Roaming                :","",1).replace("    Cost Source            :","",1)
@@ -234,5 +188,3 @@ for x in range(len(Users)):
         lista = cleann1.split(". ") #create a list whit useful information
         dict_func(lista,dic_wifi) #change the list to the "dic_wifi"
         store(dic_wifi) #add to the file
-
-#err_func()
