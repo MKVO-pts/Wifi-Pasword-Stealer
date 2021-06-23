@@ -12,5 +12,5 @@ It work whit Windows 10!
 No need to setup! Only run the file
 
 ## Languagues
-This program only use Python
+This script only use Python
 ###### Made by MKvO
