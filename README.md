@@ -6,7 +6,7 @@
 
 ## General Info
 This project let you scrape stored wifi passwords without asking for Administrator Privileges. 
-It work whit Windows 10!
+<p>It work whit Windows 10!
 
 ## Setup
 No need to setup! Only run the file
