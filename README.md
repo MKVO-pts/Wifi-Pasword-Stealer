@@ -1,4 +1,4 @@
-<h1> Wifi Password Scraper </h1>
+<h1> Wifi Password Stealer </h1>
 
 * [General info](#general-info)
 * [Setup](#setup)
