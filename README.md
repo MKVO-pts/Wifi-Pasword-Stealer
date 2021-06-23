@@ -1,2 +1,16 @@
-# Wifi-Pasword-Scraper
-Tool to scrape stored wifi passwords without admin password *Windows only
+<h1> Wifi Password Scraper </h1>
+
+* [General info](#general-info)
+* [Setup](#setup)
+* [Languagues](#languagues)
+
+## General Info
+This project let you scrape stored wifi passwords without asking for Administrator Privileges. 
+It work whit Windows 10!
+
+## Setup
+No need to setup! Only run the file
+
+## Languagues
+This program only use Python
+###### Made by MKvO
