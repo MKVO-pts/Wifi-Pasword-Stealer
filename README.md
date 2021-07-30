@@ -5,8 +5,8 @@
 * [Languagues](#languagues)
 
 ## General Info
+<b>It only works with Windows 10!</b> <P>
 This project let you scrape stored wifi passwords without asking for Administrator Privileges. 
-<p>It work with Windows 10!
 
 ## Setup
 No need to setup! Only run the file
